@@ -8,23 +8,26 @@ public class Client
         String strIp, strMessage;
         int port;
         DatagramSocket sock = null;
-        boolean f = true;
+        //boolean f = true;
         Scanner sc = new Scanner(System.in);
 
         try {
             // Run while the client is active
-            while (f) {
-                //make connection to socket
-                System.out.println("Enter IP address: ");
-                strIp = sc.nextLine();
-                InetAddress ip = InetAddress.getByName(strIp);
+            Console console = System.console();
+            //make connection to socket
+            System.out.println("Enter IP address: ");
+            strIp = sc.nextLine();
+            InetAddress ip = InetAddress.getByName(strIp);
 
-                System.out.println("Enter Port: ");
-                port = sc.nextInt();
-                sock = new DatagramSocket(port, ip);
+            System.out.println("Enter Port: ");
+            port = sc.nextInt();
+            while (true) {
+                
+                sock = new DatagramSocket();
+                sock.setSoTimeout(5000);
 
-                System.out.println("Enter Message: ");
-                strMessage = sc.nextLine();
+                //System.out.println("Enter Message: ");
+                strMessage = console.readLine("\nMessage: ");//sc.nextLine();
                 byte [] message = strMessage.getBytes();
 
                 DatagramPacket request = new DatagramPacket(message, message.length, ip, port);
@@ -34,11 +37,10 @@ public class Client
                 DatagramPacket reply = new DatagramPacket(buffer, buffer.length);
                 sock.receive(reply);
                 System.out.println("Reply: " + new String(reply.getData()));
-                sock.close();
-                sc.close();
             }
         }catch (SocketException e){System.out.println("Socket: " + e.getMessage());
+        }catch (SocketTimeoutException s){System.out.println("Socket timed out, check the port");
         }catch (IOException e) {System.out.println("IO: " + e.getMessage());}
-     //{if(sock != null) sock.close();}
+     {if(sock != null) sock.close();}
     }
 } 
