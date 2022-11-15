@@ -8,13 +8,10 @@ public class Client
         String strIp, strMessage;
         int port;
         DatagramSocket sock = null;
-        //boolean f = true;
         Scanner sc = new Scanner(System.in);
 
         try {
-            // Run while the client is active
             Console console = System.console();
-            //make connection to socket
             System.out.println("Enter IP address: ");
             strIp = sc.nextLine();
             InetAddress ip = InetAddress.getByName(strIp);
@@ -24,7 +21,7 @@ public class Client
             while (true) {
                 
                 sock = new DatagramSocket();
-                sock.setSoTimeout(5000);
+                //sock.setSoTimeout(5000);
 
                 //System.out.println("Enter Message: ");
                 strMessage = console.readLine("\nMessage: ");//sc.nextLine();

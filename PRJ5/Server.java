@@ -8,14 +8,13 @@ public class Server
     	String upper;
         DatagramSocket sock = null;
         int port;
-       
         Scanner sc = new Scanner(System.in);
         
     	try {
             System.out.println("Enter Port: ");
             port = sc.nextInt();
             sock = new DatagramSocket(port);
-            System.out.printf("Listening for connections on port ", port," ...");
+            System.out.println("Listening for connections on port " + port +" ...");
         
             while (true) {
                 byte[] buffer = new byte[1000];
@@ -23,7 +22,9 @@ public class Server
                 sock.receive(request);
             	// read client input and change to uppercase
                 upper = new String(request.getData());
+                System.out.println("Message Recieved: " + upper);
                 upper = upper.toUpperCase();
+                System.out.println("Message Sent: " + upper);
                 byte [] b = upper.getBytes();
                 DatagramPacket reply = new DatagramPacket(b, b.length, request.getAddress(), request.getPort());
                 sock.send(reply);
